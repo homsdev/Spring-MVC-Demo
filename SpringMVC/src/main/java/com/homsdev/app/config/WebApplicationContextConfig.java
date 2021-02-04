@@ -11,7 +11,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.homsdev.app")
+@ComponentScan("com.homsdev.app")//Scan for all classes stereotypes (Controllers, services & repositories) 
 public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
 	
 		@Override
@@ -19,11 +19,14 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
 			configurer.enable();
 		}
 
+		
+//		This bean resolves the actual view´s file path
+//      Its job is to form the actual URL from the returned String from the controller
 		@Bean
 		public InternalResourceViewResolver getInternalResourceViewResolver() {
 			InternalResourceViewResolver resolver = new InternalResourceViewResolver();
 			resolver.setViewClass(JstlView.class);
-			resolver.setPrefix("/WEB-INF/jsp/");
+			resolver.setPrefix("/WEB-INF/views/");
 			resolver.setSuffix(".jsp");
 			return resolver;
 		}
