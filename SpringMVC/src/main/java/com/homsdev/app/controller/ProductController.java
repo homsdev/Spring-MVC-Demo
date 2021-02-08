@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 import com.homsdev.app.domain.repository.ProductRepository;
+import com.homsdev.app.service.ProductService;
 
 @Controller
 public class ProductController {
@@ -19,9 +20,18 @@ public class ProductController {
 	@Autowired//Dependency injection from @Repository annotation
 	ProductRepository productRepository;
 	
+	@Autowired//Service Object to handle business operations
+	ProductService productService;
+	
 	@RequestMapping("/products")
 	public String list(Model model) {
 		model.addAttribute("products", productRepository.getAllProducts());
 		return "products";
+	}
+	
+	@RequestMapping("/update/stock")
+	public String updateStock() {
+		productService.updateAllStock();
+		return "redirect:/products";
 	}
 }

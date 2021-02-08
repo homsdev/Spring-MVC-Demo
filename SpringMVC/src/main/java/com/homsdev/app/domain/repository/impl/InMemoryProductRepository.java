@@ -28,6 +28,17 @@ public class InMemoryProductRepository implements ProductRepository {
 		return result;
 	}
 
+	
+//Communicates with a in-memory DB to update products
+	public void updateStock(String productID, long noOfUnits) {
+		// TODO Auto-generated method stub
+		String SQL= "UPDATE PRODUCTS SET UNITS_IN_STOCK= :unitsInStock WHERE ID = :id";
+		Map<String , Object> params= new HashMap<String, Object>();
+		params.put("unitsInStock", noOfUnits);
+		params.put("id",productID);
+		jdbcTemplate.update(SQL, params);
+	}
+	
 	private static final class ProductMapper implements RowMapper<Product> {
 		public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Product product = new Product();

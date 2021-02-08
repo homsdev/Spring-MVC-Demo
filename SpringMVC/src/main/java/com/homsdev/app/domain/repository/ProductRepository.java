@@ -8,4 +8,5 @@ import com.homsdev.app.domain.Product;
 public interface ProductRepository {
 	
 	List<Product> getAllProducts();
+	void updateStock(String productID,long noOfUnits);
 }
