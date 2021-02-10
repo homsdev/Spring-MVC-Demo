@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.homsdev.app.domain.Product;
+import com.homsdev.app.domain.Customer;
 import com.homsdev.app.domain.repository.ProductRepository;
 
 @Repository
@@ -28,17 +29,18 @@ public class InMemoryProductRepository implements ProductRepository {
 		return result;
 	}
 
-	
+//
+
 //Communicates with a in-memory DB to update products
 	public void updateStock(String productID, long noOfUnits) {
 		// TODO Auto-generated method stub
-		String SQL= "UPDATE PRODUCTS SET UNITS_IN_STOCK= :unitsInStock WHERE ID = :id";
-		Map<String , Object> params= new HashMap<String, Object>();
+		String SQL = "UPDATE PRODUCTS SET UNITS_IN_STOCK= :unitsInStock WHERE ID = :id";
+		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("unitsInStock", noOfUnits);
-		params.put("id",productID);
+		params.put("id", productID);
 		jdbcTemplate.update(SQL, params);
 	}
-	
+
 	private static final class ProductMapper implements RowMapper<Product> {
 		public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Product product = new Product();

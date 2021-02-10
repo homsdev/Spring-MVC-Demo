@@ -6,7 +6,8 @@ import com.homsdev.app.domain.Product;
 
 // Defines the expected behavior of product repository
 public interface ProductRepository {
-	
+
 	List<Product> getAllProducts();
-	void updateStock(String productID,long noOfUnits);
+
+	void updateStock(String productID, long noOfUnits);
 }
