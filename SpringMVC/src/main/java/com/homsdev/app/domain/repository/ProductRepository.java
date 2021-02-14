@@ -1,6 +1,7 @@
 package com.homsdev.app.domain.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import com.homsdev.app.domain.Product;
 
@@ -9,5 +10,6 @@ public interface ProductRepository {
 
 	List<Product> getAllProducts();
 	List<Product> getProductByCategory(String Category);
+	List<Product> getProductByfilter(Map<String,List<String>>filterParams);
 	void updateStock(String productID, long noOfUnits);
 }

@@ -1,6 +1,7 @@
 package com.homsdev.app.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,10 @@ public class ProductServiceImpl implements ProductService {
 
 	public List<Product> getProductsByCategory(String Category) {
 		return productRepository.getProductByCategory(Category);
+	}
+
+	public List<Product> getProductByFilter(Map<String, List<String>> filterParams) {
+		return productRepository.getProductByfilter(filterParams);
 	}
 
 }

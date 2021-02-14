@@ -37,4 +37,10 @@ public class ProductController {
 		model.addAttribute("products", productService.getProductsByCategory(productCategory));
 		return "products";
 	}
+	
+	@RequestMapping("/products/filter/{params}")
+	public String getProductsByFilter(Model model, @PathVariable("params") Map<String,List<String>> paramsFilter) {
+		
+		return "products";
+	}
 }
