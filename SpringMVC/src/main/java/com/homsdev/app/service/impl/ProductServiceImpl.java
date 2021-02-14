@@ -30,10 +30,14 @@ public class ProductServiceImpl implements ProductService {
 		productRepository.updateStock(null, 0);
 	}
 
-	//Get all products from an in-memory DB
+	// Get all products from an in-memory DB
 	public List<Product> getAllProducts() {
 		List<Product> allProducts = productRepository.getAllProducts();
 		return allProducts;
+	}
+
+	public List<Product> getProductsByCategory(String Category) {
+		return productRepository.getProductByCategory(Category);
 	}
 
 }

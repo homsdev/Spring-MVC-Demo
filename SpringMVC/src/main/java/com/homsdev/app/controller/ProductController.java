@@ -3,11 +3,13 @@ package com.homsdev.app.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.homsdev.app.service.ProductService;
 
 @Controller
+@RequestMapping("market")
 public class ProductController {
 
 //	it is not a good practice to connect two layers directly that´s why 
@@ -26,6 +28,13 @@ public class ProductController {
 	@RequestMapping("/update/stock")
 	public String updateStock() {
 		productService.updateAllStock();
-		return "redirect:/products";
+		return "redirect:/market/products";
+	}
+	
+	//URI Template
+	@RequestMapping("/products/{category}")
+	public String getProductsByCategory(Model model,@PathVariable("category")String productCategory) {
+		model.addAttribute("products", productService.getProductsByCategory(productCategory));
+		return "products";
 	}
 }

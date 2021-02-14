@@ -8,6 +8,6 @@ import com.homsdev.app.domain.Product;
 public interface ProductRepository {
 
 	List<Product> getAllProducts();
-
+	List<Product> getProductByCategory(String Category);
 	void updateStock(String productID, long noOfUnits);
 }

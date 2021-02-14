@@ -6,5 +6,6 @@ import com.homsdev.app.domain.Product;
 
 public interface ProductService {
 	List<Product> getAllProducts();
+	List<Product> getProductsByCategory(String Category);
 	void updateAllStock();
 }

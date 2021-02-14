@@ -13,7 +13,8 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @ComponentScan("com.homsdev.app")//Scan for all classes stereotypes (Controllers, services & repositories) 
 public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
-	
+
+		//Enables MVC Features when extending WebMvcConfigurerAdapter
 		@Override
 		public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 			configurer.enable();
