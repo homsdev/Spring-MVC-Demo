@@ -52,6 +52,15 @@ public class InMemoryProductRepository implements ProductRepository {
 		return jdbcTemplate.query(SQL, filterParams,new ProductMapper());
 	}
 
+	
+	public Product getProductByID(String productID) {
+		String SQL= "SELECT * FROM products WHERE ID= :id";
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("id", productID);
+		return jdbcTemplate.queryForObject(SQL,params,new ProductMapper());
+	}
+	
+	
 	private static final class ProductMapper implements RowMapper<Product> {
 		public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Product product = new Product();
@@ -68,6 +77,8 @@ public class InMemoryProductRepository implements ProductRepository {
 			return product;
 		}
 	}
+
+	
 
 
 }
