@@ -19,7 +19,7 @@ public class ProductServiceImpl implements ProductService {
 
 	// Updates all products which have less than 1000 units in Stock
 	public void updateAllStock() {
-		// TODO Auto-generated method stub
+
 		List<Product> products = productRepository.getAllProducts();
 
 		for (Product product : products) {
@@ -37,14 +37,18 @@ public class ProductServiceImpl implements ProductService {
 		return allProducts;
 	}
 
+	// Get products from the same specified category
 	public List<Product> getProductsByCategory(String Category) {
 		return productRepository.getProductByCategory(Category);
 	}
 
+	// Get products which satisfies the filter options
 	public List<Product> getProductByFilter(Map<String, List<String>> filterParams) {
 		return productRepository.getProductByfilter(filterParams);
 	}
 
+	// Get singular product info
+	// market/product?id=****
 	public Product getProductByID(String productID) {
 		return productRepository.getProductByID(productID);
 	}

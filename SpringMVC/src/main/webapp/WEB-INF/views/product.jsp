@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@page isELIgnored="false"%>
 <html>
 <head>
@@ -35,11 +36,12 @@
 				</p>
 				<p>
 
-					<strong>Available units in stock </strong> : ${product.unitsInStock}
+					<strong>Available units in stock </strong> :
+					${product.unitsInStock}
 				</p>
 				<h4>${product.unitPrice}USD</h4>
 				<p>
-					<a href="#" class="btn btn-warning btn-large"> <span
+					<a href='<spring:url value="/market/products"></spring:url>' class= "btn btn-warning btn-large"> <span
 						class="glyphicon-shopping-cart glyphicon"> </span> Order Now
 					</a>
 				</p>

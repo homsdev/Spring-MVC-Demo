@@ -24,31 +24,35 @@ public class ProductController {
 	@Autowired // Service Object to handle business operations
 	ProductService productService;
 
+	//Retrieves all available products in DB
 	@RequestMapping("/products")
 	public String list(Model model) {
 		model.addAttribute("products", productService.getAllProducts());
 		return "products";
 	}
 
+	//Updates products which have less than 1000 units in stock
 	@RequestMapping("/update/stock")
 	public String updateStock() {
 		productService.updateAllStock();
 		return "redirect:/market/products";
 	}
 	
-	//URI Template
-	@RequestMapping("/products/{category}")
+	//Retrieves info from products in the same category
+	@RequestMapping("/products/{category}")//URI Template
 	public String getProductsByCategory(Model model,@PathVariable("category")String productCategory) {
 		model.addAttribute("products", productService.getProductsByCategory(productCategory));
 		return "products";
 	}
 	
-	@RequestMapping("/products/filter/{params}")
+	//Retrieves info from products that satisfy the filter specification
+	@RequestMapping("/products/filter/{params}")//Dynamic filter 
 	public String getProductsByFilter(Model model,@MatrixVariable(pathVar = "params") Map<String,List<String>>filterParams) {
 		model.addAttribute("products", productService.getProductByFilter(filterParams));
 		return "products";
 	}
 	
+	//Retrieves info from a singular product
 	@RequestMapping("/product")
 	public String getProductByID(Model model,@RequestParam("id")String productID) {
 		model.addAttribute("product", productService.getProductByID(productID));
