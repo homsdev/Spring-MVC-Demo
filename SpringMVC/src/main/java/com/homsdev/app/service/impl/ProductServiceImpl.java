@@ -58,5 +58,10 @@ public class ProductServiceImpl implements ProductService {
 		return productRepository.getProductByID(productID);
 	}
 
+	//Add product to DB
+	public void addProduct(Product product) {
+		productRepository.addProduct(product);
+	}
+
 
 }

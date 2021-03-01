@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.MatrixVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.homsdev.app.domain.Product;
 import com.homsdev.app.service.ProductService;
 
 @Controller
@@ -54,7 +57,7 @@ public class ProductController {
 		return "products";
 	}
 
-	//Filter products by category, price and brand
+	// Filter products by category, price and brand
 	@RequestMapping("/products/{category}/{price}")
 	public String filterProducts(Model model, @MatrixVariable(pathVar = "price") Map<String, List<String>> filterPrice,
 			@RequestParam("brand") String brand, @PathVariable("category") String productCategory) {
@@ -75,5 +78,18 @@ public class ProductController {
 	public String getProductByID(Model model, @RequestParam("id") String productID) {
 		model.addAttribute("product", productService.getProductByID(productID));
 		return "product";
+	}
+
+	@RequestMapping("/products/add")
+	public String getAddNewProductForm(Model model) {
+		Product product = new Product();
+		model.addAttribute("newProduct", product);
+		return "formProduct";
+	}
+	
+	@PostMapping("/products/add")
+	public String addNewProduct(@ModelAttribute Product newProduct) {
+		productService.addProduct(newProduct);
+        return "redirect:/market/products";
 	}
 }

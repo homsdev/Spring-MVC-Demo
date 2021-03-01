@@ -52,11 +52,11 @@ public class InMemoryProductRepository implements ProductRepository {
 		String SQL = "SELECT * FROM products WHERE category IN (:categories) AND manufacturer IN (:brands)";
 		return jdbcTemplate.query(SQL, filterParams, new ProductMapper());
 	}
-	
-	//Filter products by category, price and brand
+
+	// Filter products by category, price and brand
 	public List<Product> getProductsByPrice(Map<String, List<String>> filterPrice) {
-		String SQL="SELECT * FROM products WHERE manufacturer IN (:brand) AND CATEGORY = :category AND UNIT_PRICE BETWEEN :low AND :high";
-		return jdbcTemplate.query(SQL,filterPrice,new ProductMapper());
+		String SQL = "SELECT * FROM products WHERE manufacturer IN (:brand) AND CATEGORY = :category AND UNIT_PRICE BETWEEN :low AND :high";
+		return jdbcTemplate.query(SQL, filterPrice, new ProductMapper());
 	}
 
 	// Return info from a product which satisfies the ID
@@ -66,7 +66,33 @@ public class InMemoryProductRepository implements ProductRepository {
 		params.put("id", productID);
 		return jdbcTemplate.queryForObject(SQL, params, new ProductMapper());
 	}
-	
+
+	//Add new product to DB
+	public void addProduct(Product product) {
+		String SQL = "INSERT INTO PRODUCTS (ID, "
+                + "NAME,"
+                + "DESCRIPTION,"
+                + "UNIT_PRICE,"
+                + "MANUFACTURER,"
+                + "CATEGORY,"
+                + "CONDITION,"
+                + "UNITS_IN_STOCK,"
+                + "UNITS_IN_ORDER,"
+                + "DISCONTINUED) "
+                + "VALUES (:id, :name, :desc, :price,:manufacturer, :category, :condition, :inStock,:inOrder, :discontinued)";
+		Map<String,Object>params=new HashMap<String, Object>();
+		params.put("id", product.getProductID());
+		params.put("name", product.getName());
+		params.put("desc", product.getDescription());
+		params.put("price", product.getUnitPrice());
+		params.put("manufacturer",product.getManufacturer());
+		params.put("category", product.getCategory());
+		params.put("condition", product.getCondition());
+		params.put("inStock",product.getUnitsInStock());
+		params.put("inOrder",product.getUnitsInOrder());
+		params.put("discontinued", product.isDiscontinued());
+		jdbcTemplate.update(SQL, params);
+	}
 
 	private static final class ProductMapper implements RowMapper<Product> {
 		public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -85,6 +111,4 @@ public class InMemoryProductRepository implements ProductRepository {
 		}
 	}
 
-
-	
 }
