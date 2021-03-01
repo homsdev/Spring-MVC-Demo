@@ -52,6 +52,12 @@ public class InMemoryProductRepository implements ProductRepository {
 		String SQL = "SELECT * FROM products WHERE category IN (:categories) AND manufacturer IN (:brands)";
 		return jdbcTemplate.query(SQL, filterParams, new ProductMapper());
 	}
+	
+	//Filter products by category, price and brand
+	public List<Product> getProductsByPrice(Map<String, List<String>> filterPrice) {
+		String SQL="SELECT * FROM products WHERE manufacturer IN (:brand) AND CATEGORY = :category AND UNIT_PRICE BETWEEN :low AND :high";
+		return jdbcTemplate.query(SQL,filterPrice,new ProductMapper());
+	}
 
 	// Return info from a product which satisfies the ID
 	public Product getProductByID(String productID) {
@@ -60,6 +66,7 @@ public class InMemoryProductRepository implements ProductRepository {
 		params.put("id", productID);
 		return jdbcTemplate.queryForObject(SQL, params, new ProductMapper());
 	}
+	
 
 	private static final class ProductMapper implements RowMapper<Product> {
 		public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -78,4 +85,6 @@ public class InMemoryProductRepository implements ProductRepository {
 		}
 	}
 
+
+	
 }
