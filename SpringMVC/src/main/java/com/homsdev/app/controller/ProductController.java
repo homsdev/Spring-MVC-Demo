@@ -7,6 +7,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +31,13 @@ public class ProductController {
 
 	@Autowired // Service Object to handle business operations
 	ProductService productService;
+
+	//Whitelisting fields binding
+	@InitBinder
+	public void inicialiseBinder(WebDataBinder dataBinder) {
+		dataBinder.setAllowedFields("productID", "name", "unitPrice", "description", "manufacturer", "category",
+				"unitsInStock", "condition");
+	}
 
 	// Retrieves all available products in DB
 	@RequestMapping("/products")
@@ -80,16 +91,23 @@ public class ProductController {
 		return "product";
 	}
 
+	// Send form to add new product info
 	@RequestMapping("/products/add")
 	public String getAddNewProductForm(Model model) {
 		Product product = new Product();
 		model.addAttribute("newProduct", product);
 		return "formProduct";
 	}
-	
+
+	// Send info collected in the form to DB
 	@PostMapping("/products/add")
-	public String addNewProduct(@ModelAttribute Product newProduct) {
+	public String addNewProduct(@ModelAttribute("newProduct") Product newProduct, BindingResult result) {
+		String[] suppressedFields = result.getSuppressedFields();
+		if (suppressedFields.length > 0) {
+			throw new RuntimeException("Attempting to bind dissalllowed fields: "
+					+ StringUtils.arrayToCommaDelimitedString(suppressedFields));
+		}
 		productService.addProduct(newProduct);
-        return "redirect:/market/products";
+		return "redirect:/market/products";
 	}
 }

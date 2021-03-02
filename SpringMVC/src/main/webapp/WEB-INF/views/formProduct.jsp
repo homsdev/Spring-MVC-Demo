@@ -58,16 +58,6 @@
 			</div>
 
 			<div class="form-input">
-				<label for="unitsInOrder">Units in Order</label>
-				<form:input path="unitsInOrder" type="number" id="unitsInOrder" />
-			</div>
-
-			<div class="form-input">
-				<label for="discontinued">Discontinued</label>
-				<form:checkbox path="discontinued" id="discontinued" />
-			</div>
-
-			<div class="form-input">
 				<label for="condition">Condition</label>
 				<form:radiobutton path="condition" value="new" />
 				New
