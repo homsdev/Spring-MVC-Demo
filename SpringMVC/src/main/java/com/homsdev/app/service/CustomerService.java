@@ -6,4 +6,5 @@ import com.homsdev.app.domain.Customer;
 
 public interface CustomerService {
 	List<Customer> getAllCustomers();
+	void addNewCustomer(Customer customer);
 }

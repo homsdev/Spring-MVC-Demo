@@ -34,10 +34,7 @@
 					</div>
 				</div>
 			</c:forEach>
-
 		</div>
 	</section>
-</body>
-</html>
 </body>
 </html>

@@ -14,22 +14,36 @@ import org.springframework.stereotype.Repository;
 import com.homsdev.app.domain.Customer;
 import com.homsdev.app.domain.repository.CustomerRepository;
 
-
 @Repository
 public class InMemoryCustomerRepository implements CustomerRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
-	
-	public List<Customer>getAllCustomers(){
-		Map<String,Object>params=new HashMap<String, Object>();
-		List<Customer>result=jdbcTemplate.query("SELECT * FROM customers", params,new CustomerMapper());
+
+	public List<Customer> getAllCustomers() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		List<Customer> result = jdbcTemplate.query("SELECT * FROM customers", params, new CustomerMapper());
 		return result;
 	}
+
 	
-	private static final class CustomerMapper implements RowMapper<Customer>{
+	//Add new Customer to DB
+	public void addNewCustomer(Customer customer) {
+		String SQL = "Insert into customers (" + "ID," + "NAME," + "ADDRESS," + "NO_OF_ORDERS)"
+				+ "values (:id,:name,:address,:NoOrders)";
+		HashMap<String, Object> newCustomer = new HashMap<String, Object>();
+
+		newCustomer.put("id", customer.getCustomerID());
+		newCustomer.put("name", customer.getName());
+		newCustomer.put("address", customer.getAddress());
+		newCustomer.put("NoOrders", customer.getNoOfOrders());
+
+		jdbcTemplate.update(SQL, newCustomer);
+	}
+
+	private static final class CustomerMapper implements RowMapper<Customer> {
 		public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Customer customer=new Customer();
+			Customer customer = new Customer();
 			customer.setCustomerID(rs.getString("ID"));
 			customer.setName(rs.getString("NAME"));
 			customer.setAddress(rs.getString("ADDRESS"));
@@ -37,7 +51,5 @@ public class InMemoryCustomerRepository implements CustomerRepository {
 			return customer;
 		}
 	}
-	
-	
 
 }

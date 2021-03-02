@@ -20,4 +20,11 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerRepository.getAllCustomers();
 	}
 
+	//Service to send information to Model and add a new customer
+	public void addNewCustomer(Customer customer) {
+		customerRepository.addNewCustomer(customer);
+	}
+	
+	
+
 }
