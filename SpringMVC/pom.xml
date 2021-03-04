@@ -53,6 +53,7 @@
 		</dependency>
 
 
+		<!-- Dependencies for implemented view resolver to JSON -->
 		<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
