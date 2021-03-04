@@ -26,6 +26,7 @@
 			<c:forEach items="${products}" var="product">
 				<div class="col-sm-6 col-md-3 ">
 					<div class="card m-2 p-2 w-100" >
+						<img alt="product image" src="<c:url value="/img/${product.productID}.jpg"></c:url>"/>
 						<div class="caption">
 							<h3>${product.name}</h3>
 							<p>${product.description}</p>
