@@ -82,7 +82,7 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
 		ArrayList<View> views=new ArrayList<View>();
 		views.add(jsonView());
 		resolver.setDefaultViews(views);
-		return resolver;
+	return resolver;
 	}
 	
 }
