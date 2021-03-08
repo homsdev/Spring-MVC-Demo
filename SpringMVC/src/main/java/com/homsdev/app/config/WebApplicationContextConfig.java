@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.accept.ContentNegotiationManager;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.homsdev.app.interceptor.ProcessingTimeLogInterceptor;
+import com.homsdev.app.interceptor.PromoCodeInterceptor;
 
 @Configuration
 @EnableWebMvc
@@ -51,6 +53,8 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new ProcessingTimeLogInterceptor());
+		registry.addInterceptor(promoCodeInterceptor())// Register promotional code checker interceptor
+				.addPathPatterns("/**/market/products/specialOffer");// Add the path where the interceptor should apply
 		super.addInterceptors(registry);
 	}
 
@@ -92,4 +96,12 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
 		return resolver;
 	}
 
+	@Bean
+	public HandlerInterceptor promoCodeInterceptor() {
+		PromoCodeInterceptor promoCodeInterceptor=new PromoCodeInterceptor();
+		promoCodeInterceptor.setPromoCode("HOMS");
+		promoCodeInterceptor.setErrorRedirect("market/products/invalidPromoCode");
+		promoCodeInterceptor.setOfferRedirect("market/products");
+		return promoCodeInterceptor;
+	}
 }

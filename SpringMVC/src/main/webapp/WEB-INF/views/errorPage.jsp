@@ -14,10 +14,10 @@
 	<section>
 		<div class="jumbotron">
 			<h1 class="danger">
-				Oops! <sub>There is no product found with ID:
-					${invalidProductId}</sub>
+				Oops! Something went wrong...<sub>: ${alert}</sub>
 			</h1>
-			<a href="<spring-ulr value="/market/products"></spring-ulr>"> Products</a>
+			<a href="<spring-ulr value="/market/products"></spring-ulr>">
+				Products</a>
 		</div>
 	</section>
 

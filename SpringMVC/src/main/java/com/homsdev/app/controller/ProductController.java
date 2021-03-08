@@ -42,9 +42,9 @@ public class ProductController {
 	@ExceptionHandler(ProductNotFoundException.class)
 	public ModelAndView handleError(HttpServletRequest req,ProductNotFoundException exception) {
 		ModelAndView mav=new ModelAndView();
-		mav.addObject("inavlidProductID",exception.getProductId());
+		mav.addObject("alert",exception.getProductId());
 		mav.addObject("url",req.getRequestURL()+"?"+req.getQueryString());
-		mav.setViewName("productNotFound");
+		mav.setViewName("errorPage");
 		return mav;
 	}
 	
@@ -130,5 +130,11 @@ public class ProductController {
 		}
 		productService.addProduct(newProduct);
 		return "redirect:/market/products";
+	}
+	
+	@RequestMapping("/products/invalidPromoCode")
+	public String invalidPromoCode(Model model) {
+		model.addAttribute("alert","Offer Code Incorrect");
+		return"errorPage";
 	}
 }
