@@ -12,6 +12,7 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.springframework.web.util.UrlPathHelper;
 
+import com.homsdev.app.interceptor.ProcessingTimeLogInterceptor;
 
 @Configuration
 @EnableWebMvc
@@ -33,7 +35,7 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
 		configurer.enable();
 	}
 
-	//Configures static resources for Spring¿MVC
+	// Configures static resources for Spring¿MVC
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/img/**").addResourceLocations("/resources/images/");
@@ -46,7 +48,13 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
 		configurer.setUrlPathHelper(urlPathHelper);
 	}
 
-//		This bean resolves the actual view´s file path
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new ProcessingTimeLogInterceptor());
+		super.addInterceptors(registry);
+	}
+
+	// This bean resolves the actual view´s file path
 //      Its job is to form the actual URL from the returned String from the controller
 	@Bean
 	public InternalResourceViewResolver getInternalResourceViewResolver() {
@@ -64,25 +72,24 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
 		resource.setBasename("messages");
 		return resource;
 	}
-	
-	//Configuring JSON view
+
+	// Configuring JSON view
 	@Bean
 	public MappingJackson2JsonView jsonView() {
-		MappingJackson2JsonView jsonView=new MappingJackson2JsonView();
+		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
 		jsonView.setPrettyPrint(true);
 		return jsonView;
 	}
-	
-	
-	//configuring Content negotiation view resolver
+
+	// configuring Content negotiation view resolver
 	@Bean
 	public ViewResolver negotiationViewResolver(ContentNegotiationManager contentManager) {
-		ContentNegotiatingViewResolver resolver=new ContentNegotiatingViewResolver();
+		ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
 		resolver.setContentNegotiationManager(contentManager);
-		ArrayList<View> views=new ArrayList<View>();
+		ArrayList<View> views = new ArrayList<View>();
 		views.add(jsonView());
 		resolver.setDefaultViews(views);
 		return resolver;
 	}
-	
+
 }
