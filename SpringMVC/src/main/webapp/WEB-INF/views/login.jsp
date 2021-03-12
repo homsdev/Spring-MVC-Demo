@@ -3,7 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-
+<%@page isELIgnored="false"%>
+<c:url var="loginURL" value="/login"></c:url>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,23 +13,25 @@
 </head>
 <body>
 
-<c:url var="loginURL" value="/login"></c:url>
 	<main>
 		<div class="container md">
-			<form action="${loginURL}" method="post">
+			<h3>My Own Login Form</h3>
+			<form action="${loginURL }" method="post">
+				<p>${loginURL}</p>
 				<div class="form-input">
-					<label for="username">Username</label>
-					<input id="username" name="username" type="text">
+					<label for="username">Username</label> <input id="username"
+						name="username" type="text">
 				</div>
 				<div class="form-input">
-					<label for="password">Password</label>
-					<input id="password" name="password" type="password">
+					<label for="password">Password</label> <input id="password"
+						name="password" type="password">
 				</div>
-				
+
 				<input type="submit" value="Log In" class="btn btn-submit" />
-				
+
 				<div class="form-footer">
-				<a href="#">Forgot password?</a>
+					<a href="#">Forgot password?</a> <a href="#">Dont have an
+						account?</a>
 				</div>
 			</form>
 		</div>
