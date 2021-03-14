@@ -5,35 +5,37 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@page isELIgnored="false"%>
 <c:url var="loginURL" value="/login"></c:url>
+<c:url var="style" value="/css/main.css"></c:url>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Login</title>
+<link rel="stylesheet" href="${style}" />
 </head>
 <body>
+	<main class="view">
+		<div class="form-container">
+			<div class="form-header">
+				<h1>Log In</h1>
+			</div>
+			<div class="form-body">
+				<form action="${loginURL}" method="POST">
+					<div class="form-group">
+						<input name="username" type="text" placeholder="Username"
+							autocomplete="off" />
+					</div>
 
-	<main>
-		<div class="container md">
-			<h3>My Own Login Form</h3>
-			<form action="${loginURL }" method="post">
-				<p>${loginURL}</p>
-				<div class="form-input">
-					<label for="username">Username</label> <input id="username"
-						name="username" type="text">
-				</div>
-				<div class="form-input">
-					<label for="password">Password</label> <input id="password"
-						name="password" type="password">
-				</div>
+					<div class="form-group">
+						<input name="password" type="password" placeholder="Password" />
+					</div>
 
-				<input type="submit" value="Log In" class="btn btn-submit" />
-
-				<div class="form-footer">
-					<a href="#">Forgot password?</a> <a href="#">Dont have an
-						account?</a>
-				</div>
-			</form>
+					<input type="submit" value="Log In" class="btn" />
+				</form>
+			</div>
+			<div class="form-footer">
+				<a href="">Sign Up</a> <a href="">Forgot Password?</a>
+			</div>
 		</div>
 	</main>
 

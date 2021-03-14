@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	/*DATABASE BASED AUTHENTICATION*/
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.	formLogin().loginPage("/login")
+		http.formLogin().loginPage("/login")
 		.usernameParameter("username")
 		.passwordParameter("password");
 	
