@@ -14,30 +14,32 @@
 <link rel="stylesheet" href="${style}" />
 </head>
 <body>
-	<main class="view">
-		<div class="form-container">
-			<div class="form-header">
-				<h1>Log In</h1>
-			</div>
-			<div class="form-body">
-				<form action="${loginURL}" method="POST">
-					<div class="form-group">
-						<input name="username" type="text" placeholder="Username"
-							autocomplete="off" />
-					</div>
 
-					<div class="form-group">
-						<input name="password" type="password" placeholder="Password" />
-					</div>
+	<main class="fullscreen center">
+		<div class="container-md">
+			<div class="card">
+				<div class="card__header">
+					<h1>Log In</h1>
+				</div>
+				<div class="card__body">
+					<form action="${loginURL}" method="POST" class="form">
+						<div class="form-group">
+							<input type="text" name="username" placeholder="Username" />
+						</div>
+						<div class="form-group">
+							<input type="password" name="password" placeholder="Password" />
+						</div>
+						<input type="submit" value="Log In" class="btn-dark block" />
+					</form>
+				</div>
 
-					<input type="submit" value="Log In" class="btn" />
-				</form>
-			</div>
-			<div class="form-footer">
-				<a href="">Sign Up</a> <a href="">Forgot Password?</a>
+				<div class="card__footer">
+					<a href="#">Forgot password?</a> 
+					<a href="#">Don´t have an account?</a>
+				</div>
 			</div>
 		</div>
 	</main>
-
+	
 </body>
 </html>

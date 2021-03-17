@@ -14,22 +14,20 @@
 <link rel="stylesheet" href="${styles}" />
 </head>
 <body>
-	<nav>
-		<ul>
-			<li><a href="">Home</a></li>
-			<li><a href="">Products</a></li>
-			<li><a href="">Login</a></li>
-			<li><a href="">About</a></li>
-		</ul>
-	</nav>
+	<nav class="nav-fixed-top">
+      <ul class="nav-items">
+        <li class="nav-items__item"><a href="">Home</a></li>
+        <li class="nav-items__item"><a href="">Products</a></li>
+        <li class="nav-items__item"><a href="">Login</a></li>
+        <li class="nav-items__item"><a href="">About</a></li>
+      </ul>
+    </nav>
 
-	<main>
-		<div class="container">
-			<div class="jumbotron">
-				<h1>${greeting}</h1>
-				<p>${tagline}</p>
-			</div>
-		</div>
-	</main>
+	<main class="fullscreen-main">
+      <div class="jumbotron-dark">
+        <h1>${greeting }</h1>
+        <p>${tagline}</p>
+      </div>
+    </main>
 </body>
 </html>
