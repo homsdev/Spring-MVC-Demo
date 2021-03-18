@@ -60,4 +60,12 @@ public class User {
 		this.enable = enable;
 	}
 
+	@Override
+	public String toString() {
+		return "User [userID=" + userID + ", username=" + username + ", password=" + password + ", role=" + role
+				+ ", enable=" + enable + "]";
+	}
+	
+	
+
 }

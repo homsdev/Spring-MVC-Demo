@@ -28,7 +28,14 @@
 					</div>
 					
 					<div class="form-group">
-					<form:input path="password" placeholder="username"/>
+					<form:password path="password" placeholder="password"/>
+					</div>
+					
+					<div class="form-group">
+					<form:select path="role">
+						<form:option value="ADMIN">ADMIN</form:option>
+						<form:option value="USER">USER</form:option>
+					</form:select>
 					</div>
 					
 					<input type="submit" class="btn-dark block" value="Sign up" />

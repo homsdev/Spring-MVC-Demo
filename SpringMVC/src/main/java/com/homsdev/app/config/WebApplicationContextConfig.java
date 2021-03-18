@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.View;
@@ -104,5 +106,10 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
 		promoCodeInterceptor.setErrorRedirect("market/products/invalidPromoCode");
 		promoCodeInterceptor.setOfferRedirect("market/products");
 		return promoCodeInterceptor;
+	}
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 }
