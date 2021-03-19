@@ -1,5 +1,7 @@
 package com.homsdev.app.service.impl;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,8 +21,9 @@ public class UserServiceImpl implements UserService {
 	PasswordEncoder passwordEncoder;
 	
 	public void registerUser(User newUser) {
-		// Enable user 
-		newUser.setUserID("U001");
+		
+		String ID=UUID.randomUUID().toString();
+		newUser.setUserID(ID);
 		newUser.setEnable(true);
 		newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 		System.out.println("New User was created with: "+newUser.toString());
