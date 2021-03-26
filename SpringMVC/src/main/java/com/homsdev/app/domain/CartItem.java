@@ -42,7 +42,6 @@ public class CartItem {
 	}
 
 	public BigDecimal getTotalprice() {
-		totalprice = this.product.getUnitPrice().multiply(new BigDecimal(this.quantity));
 		return totalprice;
 	}
 
@@ -50,4 +49,9 @@ public class CartItem {
 		this.totalprice = totalprice;
 	}
 
+	
+	public BigDecimal updatePrice() {
+		BigDecimal price = this.product.getUnitPrice().multiply(new BigDecimal(this.quantity));
+		return price;
+	}
 }

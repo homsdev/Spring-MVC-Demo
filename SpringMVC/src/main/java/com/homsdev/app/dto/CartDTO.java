@@ -2,8 +2,6 @@ package com.homsdev.app.dto;
 
 import java.util.List;
 
-import com.homsdev.app.domain.Product;
-
 public class CartDTO {
 	private String ID;
 	private List<CartItemDTO> cartItems;
