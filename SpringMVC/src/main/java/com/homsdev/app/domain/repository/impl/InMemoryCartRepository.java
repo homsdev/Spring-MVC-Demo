@@ -18,53 +18,47 @@ import com.homsdev.app.domain.repository.CartRepository;
 import com.homsdev.app.dto.CartDTO;
 import com.homsdev.app.dto.CartItemDTO;
 import com.homsdev.app.service.ProductService;
-import com.homsdev.app.service.impl.ProductServiceImpl;
-
 
 @Repository
 public class InMemoryCartRepository implements CartRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
-	
+
+	@Autowired
+	private ProductService productService;
 
 	@Override
 	public void create(CartDTO cartDTO) {
-		// 
-		String SQL_CART= "INSERT INTO CART (ID) VALUES (:id)";
-		String SQL_ITEM= "INSERT INTO CART_ITEM (ID,PRODUCT_ID,CART_ID,QUANTITY)"
-				+"VALUES ("
-				+":id"
-				+":productID"
-				+":cartID"
-				+":quantity"
-				+ ")";
-		Map<String,Object> params= new HashMap<String,Object>();
+		//
+		String SQL_CART = "INSERT INTO CART (ID) VALUES (:id)";
+		String SQL_ITEM = "INSERT INTO CART_ITEM (ID,PRODUCT_ID,CART_ID,QUANTITY)" + "VALUES (" + ":id ," + ":productID ,"
+				+ ":cartID ," + ":quantity ," + ")";
+		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", cartDTO.getID());
 		jdbcTemplate.update(SQL_CART, params);
-		
-		cartDTO.getCartItems().stream()
-		.forEach(cartItem->{
-			Map<String,Object> itemParams= new HashMap<String, Object>();
+
+		cartDTO.getCartItems().stream().forEach(cartItem -> {
+			Map<String, Object> itemParams = new HashMap<String, Object>();
 			itemParams.put("id", cartItem.getID());
 			itemParams.put("productID", cartItem.getProductID());
 			itemParams.put("cartID", cartItem.getCartID());
 			itemParams.put("quantity", cartDTO.getID());
 			jdbcTemplate.update(SQL_ITEM, itemParams);
 		});
-		
+
 	}
 
 	@Override
 	public Cart getCart(String ID) {
 		// TODO Auto-generated method stub
-		String SQL_GET_CART= "SELECT * FROM CART WHERE ID = :id ";
-		String SQL_GET_ITEMS= "SELECT * FROM CART_ITEM WHERE CART_ID = :id";
-		
-		Map<String,Object>params=new HashMap<String,Object>();
+		String SQL_GET_CART = "SELECT * FROM CART WHERE ID = :id ";
+		String SQL_GET_ITEMS = "SELECT * FROM CART_ITEM WHERE CART_ID = :id";
+
+		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", ID);
-		Cart cart=jdbcTemplate.queryForObject(SQL_GET_CART, params,new CartMapper());
-		List<CartItem> items= jdbcTemplate.query(SQL_GET_ITEMS, params,new ItemsMapper());
+		Cart cart = jdbcTemplate.queryForObject(SQL_GET_CART, params, new CartMapper());
+		List<CartItem> items = jdbcTemplate.query(SQL_GET_ITEMS, params, new ItemsMapper(productService));
 		cart.setCartItems(items);
 		return cart;
 	}
@@ -72,13 +66,29 @@ public class InMemoryCartRepository implements CartRepository {
 	@Override
 	public void update(String ID, CartDTO cartDTO) {
 		// TODO Auto-generated method stub
+		String SQL_UPDATE_CART = "UPDATE CART_ITEMS SET " + "QUANTITY = :quantity ," + "PRODUCT_ID = :productID ,"
+				+ "WHERE ID = :id AND CART_ID = :cartID";
 
+		List<CartItemDTO> cartItems = cartDTO.getCartItems();
+		Map<String,Object> params= new HashMap<String,Object>();
+		for (CartItemDTO item : cartItems) {
+			params.put("id", item.getID());
+			params.put("cartID",item.getCartID());
+			params.put("quantity", item.getQuantity());
+			params.put("productID", item.getProductID());
+			jdbcTemplate.update(SQL_UPDATE_CART,params);
+		}
 	}
 
 	@Override
 	public void delete(String ID) {
 		// TODO Auto-generated method stub
-
+		String SQL_DELETE_ITEMS="DELETE FROM CART_ITEM WHERE CART_ID = :id";
+		String SQL_DELETE_CART="DELETE FROM CART WHERE ID = :id";
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("id", ID);
+		jdbcTemplate.update(SQL_DELETE_ITEMS, params);
+		jdbcTemplate.update(SQL_DELETE_CART, params);
 	}
 
 	@Override
@@ -92,24 +102,29 @@ public class InMemoryCartRepository implements CartRepository {
 		// TODO Auto-generated method stub
 
 	}
-	
-	private static class CartMapper implements RowMapper<Cart>{
+
+	private static class CartMapper implements RowMapper<Cart> {
 
 		@Override
 		public Cart mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Cart cart= new Cart();
+			Cart cart = new Cart();
 			cart.setID(rs.getString("ID"));
 			return null;
 		}
 	}
-	
-	private static class ItemsMapper implements RowMapper<CartItem>{
+
+	private static class ItemsMapper implements RowMapper<CartItem> {
+
+		private ProductService productService;
+
+		public ItemsMapper(ProductService productService) {
+			this.productService = productService;
+		}
 
 		@Override
 		public CartItem mapRow(ResultSet rs, int rowNum) throws SQLException {
-			ProductService productService = new ProductServiceImpl();
-			Product product=productService.getProductByID(rs.getString("PRODUCT_ID"));
-			CartItem item= new CartItem();
+			Product product = productService.getProductByID(rs.getString("PRODUCT_ID"));
+			CartItem item = new CartItem();
 			item.setCartID(rs.getString("CART_ID"));
 			item.setID(rs.getString("ID"));
 			item.setProduct(product);
@@ -117,6 +132,6 @@ public class InMemoryCartRepository implements CartRepository {
 			item.setTotalprice(item.updatePrice());
 			return item;
 		}
-		
+
 	}
 }
