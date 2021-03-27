@@ -94,13 +94,24 @@ public class InMemoryCartRepository implements CartRepository {
 	@Override
 	public void addItem(String ID, CartItemDTO item) {
 		// TODO Auto-generated method stub
-
+		String SQL_INSERT_ITEM = "INSERT INTO CART_ITEM (ID,PRODUCT_ID,CART_ID,QUANTITY)" + "VALUES (" + ":id ," + ":productID ,"
+				+ ":cartID ," + ":quantity ," + ")";
+		Map<String,Object> params= new HashMap<String,Object>();
+		params.put("id", item.getID());
+		params.put("productID", item.getProductID());
+		params.put("cartID", item.getCartID());
+		params.put("quantity", item.getQuantity());
+		jdbcTemplate.update(SQL_INSERT_ITEM, params);
 	}
 
 	@Override
 	public void removeItem(String cartID, String productID) {
 		// TODO Auto-generated method stub
-
+		String SQL_DELETE_ITEM = "DELETE FROM CART_ITEM WHERE CART_ID = :cartID AND PRODUCT_ID = :productID";
+		Map<String,Object> params= new HashMap<String, Object>();
+		params.put("cartID", cartID);
+		params.put("productID", productID);
+		jdbcTemplate.update(SQL_DELETE_ITEM, params);
 	}
 
 	private static class CartMapper implements RowMapper<Cart> {
