@@ -30,7 +30,6 @@ public class InMemoryCartRepository implements CartRepository {
 
 	@Override
 	public void create(CartDTO cartDTO) {
-		//
 		String SQL_CART = "INSERT INTO CART (ID) VALUES (:id)";
 		String SQL_ITEM = "INSERT INTO CART_ITEM (ID,PRODUCT_ID,CART_ID,QUANTITY)" + "VALUES (" + ":id ," + ":productID ,"
 				+ ":cartID ," + ":quantity ," + ")";
@@ -51,7 +50,6 @@ public class InMemoryCartRepository implements CartRepository {
 
 	@Override
 	public Cart getCart(String ID) {
-		// TODO Auto-generated method stub
 		String SQL_GET_CART = "SELECT * FROM CART WHERE ID = :id ";
 		String SQL_GET_ITEMS = "SELECT * FROM CART_ITEM WHERE CART_ID = :id";
 
@@ -65,7 +63,7 @@ public class InMemoryCartRepository implements CartRepository {
 
 	@Override
 	public void update(String ID, CartDTO cartDTO) {
-		// TODO Auto-generated method stub
+
 		String SQL_UPDATE_CART = "UPDATE CART_ITEMS SET " + "QUANTITY = :quantity ," + "PRODUCT_ID = :productID ,"
 				+ "WHERE ID = :id AND CART_ID = :cartID";
 
@@ -82,7 +80,7 @@ public class InMemoryCartRepository implements CartRepository {
 
 	@Override
 	public void delete(String ID) {
-		// TODO Auto-generated method stub
+
 		String SQL_DELETE_ITEMS="DELETE FROM CART_ITEM WHERE CART_ID = :id";
 		String SQL_DELETE_CART="DELETE FROM CART WHERE ID = :id";
 		Map<String,Object> params = new HashMap<String,Object>();
@@ -93,20 +91,34 @@ public class InMemoryCartRepository implements CartRepository {
 
 	@Override
 	public void addItem(String ID, CartItemDTO item) {
-		// TODO Auto-generated method stub
-		String SQL_INSERT_ITEM = "INSERT INTO CART_ITEM (ID,PRODUCT_ID,CART_ID,QUANTITY)" + "VALUES (" + ":id ," + ":productID ,"
-				+ ":cartID ," + ":quantity ," + ")";
-		Map<String,Object> params= new HashMap<String,Object>();
-		params.put("id", item.getID());
-		params.put("productID", item.getProductID());
-		params.put("cartID", item.getCartID());
-		params.put("quantity", item.getQuantity());
-		jdbcTemplate.update(SQL_INSERT_ITEM, params);
+		String SQL_SEARCH_ITEM="SELECT * FROM CART_ITEM WHERE CART_ID = :cartID AND PRODUCT_ID= :productID";
+		Map<String,Object> searchParams= new HashMap<>();
+		searchParams.put("cartId", ID);
+		searchParams.put("productID", item.getProductID());
+		
+		CartItem itemExists= jdbcTemplate.queryForObject(SQL_SEARCH_ITEM, searchParams, new ItemsMapper(productService));
+		if(itemExists!=null) {
+			String SQL_UPDATE_QUANTITY= "UPDATE CART_ITEM SET QUANTITY = :quantity WHERE CART_ID = :cartID AND PRODUCT_ID = :productID";
+			itemExists.setQuantity(itemExists.getQuantity()+1);
+			Map<String, Object> updateParams= new HashMap<String, Object>();
+			updateParams.put("quantity", itemExists.getQuantity());
+			updateParams.put("cartID",ID);
+			updateParams.put("productID", itemExists.getProduct().getProductID());
+			jdbcTemplate.update(SQL_UPDATE_QUANTITY, updateParams);
+		}else {
+			String SQL_INSERT_ITEM = "INSERT INTO CART_ITEM (ID,PRODUCT_ID,CART_ID,QUANTITY)" + "VALUES (" + ":id ," + ":productID ,"
+					+ ":cartID ," + ":quantity ," + ")";
+			Map<String,Object> params= new HashMap<String,Object>();
+			params.put("id", item.getID());
+			params.put("productID", item.getProductID());
+			params.put("cartID", item.getCartID());
+			params.put("quantity", item.getQuantity());
+			jdbcTemplate.update(SQL_INSERT_ITEM, params);
+		}
 	}
 
 	@Override
 	public void removeItem(String cartID, String productID) {
-		// TODO Auto-generated method stub
 		String SQL_DELETE_ITEM = "DELETE FROM CART_ITEM WHERE CART_ID = :cartID AND PRODUCT_ID = :productID";
 		Map<String,Object> params= new HashMap<String, Object>();
 		params.put("cartID", cartID);

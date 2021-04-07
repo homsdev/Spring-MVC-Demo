@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	DataSource datasource;
+	DataSource dataSource;
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		String SQL_USER_INFO = "SELECT username,password,enable FROM USERS WHERE username = ? ";
 		auth.jdbcAuthentication()
-		.dataSource(datasource)
+		.dataSource(dataSource)
 		.usersByUsernameQuery(SQL_USER_INFO)
 		.authoritiesByUsernameQuery("SELECT username,role FROM USERS WHERE username=?")
 		.passwordEncoder(new BCryptPasswordEncoder());
