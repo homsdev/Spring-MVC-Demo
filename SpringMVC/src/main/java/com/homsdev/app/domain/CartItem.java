@@ -54,4 +54,12 @@ public class CartItem {
 		BigDecimal price = this.product.getUnitPrice().multiply(new BigDecimal(this.quantity));
 		return price;
 	}
+
+	@Override
+	public String toString() {
+		return "CartItem [ID=" + ID + ", product=" + product + ", cartID=" + cartID + ", quantity=" + quantity
+				+ ", totalprice=" + totalprice + "]";
+	}
+	
+	
 }

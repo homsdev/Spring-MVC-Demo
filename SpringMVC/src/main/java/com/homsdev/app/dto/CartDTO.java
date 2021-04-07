@@ -10,8 +10,8 @@ public class CartDTO {
 		return ID;
 	}
 
-	public void setID(String iD) {
-		ID = iD;
+	public void setID(String ID) {
+		this.ID = ID;
 	}
 
 	public List<CartItemDTO> getCartItems() {
@@ -20,6 +20,11 @@ public class CartDTO {
 
 	public void setCartItems(List<CartItemDTO> cartItems) {
 		this.cartItems = cartItems;
+	}
+
+	@Override
+	public String toString() {
+		return "CartDTO [ID=" + ID + ", cartItems=" + cartItems + "]";
 	}
 
 }

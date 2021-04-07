@@ -32,7 +32,7 @@ public class InMemoryCartRepository implements CartRepository {
 	public void create(CartDTO cartDTO) {
 		String SQL_CART = "INSERT INTO CART (ID) VALUES (:id)";
 		String SQL_ITEM = "INSERT INTO CART_ITEM (ID,PRODUCT_ID,CART_ID,QUANTITY)" + "VALUES (" + ":id ," + ":productID ,"
-				+ ":cartID ," + ":quantity ," + ")";
+				+ ":cartID ," + ":quantity" + ")";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", cartDTO.getID());
 		jdbcTemplate.update(SQL_CART, params);
@@ -41,8 +41,8 @@ public class InMemoryCartRepository implements CartRepository {
 			Map<String, Object> itemParams = new HashMap<String, Object>();
 			itemParams.put("id", cartItem.getID());
 			itemParams.put("productID", cartItem.getProductID());
-			itemParams.put("cartID", cartItem.getCartID());
-			itemParams.put("quantity", cartDTO.getID());
+			itemParams.put("cartID", cartDTO.getID());
+			itemParams.put("quantity", cartItem.getQuantity());
 			jdbcTemplate.update(SQL_ITEM, itemParams);
 		});
 
@@ -58,23 +58,31 @@ public class InMemoryCartRepository implements CartRepository {
 		Cart cart = jdbcTemplate.queryForObject(SQL_GET_CART, params, new CartMapper());
 		List<CartItem> items = jdbcTemplate.query(SQL_GET_ITEMS, params, new ItemsMapper(productService));
 		cart.setCartItems(items);
+		cart.updateGrandTotal();
 		return cart;
 	}
 
 	@Override
 	public void update(String ID, CartDTO cartDTO) {
-
-		String SQL_UPDATE_CART = "UPDATE CART_ITEMS SET " + "QUANTITY = :quantity ," + "PRODUCT_ID = :productID ,"
+		String SQL_UPDATE_CART = "UPDATE CART_ITEM SET " 
+				+ "QUANTITY = :quantity ," 
+				+ "PRODUCT_ID = :productID "
 				+ "WHERE ID = :id AND CART_ID = :cartID";
-
-		List<CartItemDTO> cartItems = cartDTO.getCartItems();
-		Map<String,Object> params= new HashMap<String,Object>();
-		for (CartItemDTO item : cartItems) {
-			params.put("id", item.getID());
-			params.put("cartID",item.getCartID());
-			params.put("quantity", item.getQuantity());
-			params.put("productID", item.getProductID());
-			jdbcTemplate.update(SQL_UPDATE_CART,params);
+		String SQL_GET_CART= "SELECT * FROM CART WHERE ID = :id";
+		Map<String , Object> searchParams= new HashMap<String, Object>();
+		searchParams.put("id",ID);
+		Cart cartExist=jdbcTemplate.queryForObject(SQL_GET_CART, searchParams, new CartMapper());
+		System.out.println(cartDTO);
+		if(cartExist!=null) {			
+			cartDTO.getCartItems().forEach(item->{
+				
+				Map<String,Object> updateParams= new HashMap<String,Object>();		
+				updateParams.put("quantity",item.getQuantity());
+				updateParams.put("productID", item.getProductID());
+				updateParams.put("id",item.getID());
+				updateParams.put("cartID", ID);
+				jdbcTemplate.update(SQL_UPDATE_CART, updateParams);
+			});
 		}
 	}
 
@@ -132,7 +140,7 @@ public class InMemoryCartRepository implements CartRepository {
 		public Cart mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Cart cart = new Cart();
 			cart.setID(rs.getString("ID"));
-			return null;
+			return cart;
 		}
 	}
 

@@ -10,8 +10,8 @@ public class CartItemDTO {
 		return ID;
 	}
 
-	public void setID(String iD) {
-		ID = iD;
+	public void setID(String ID) {
+		this.ID = ID;
 	}
 
 	public String getProductID() {
@@ -38,4 +38,11 @@ public class CartItemDTO {
 		this.quantity = quantity;
 	}
 
+	@Override
+	public String toString() {
+		return "CartItemDTO [ID=" + ID + ", productID=" + productID + ", cartID=" + cartID + ", quantity=" + quantity
+				+ "]";
+	}
+
+	
 }

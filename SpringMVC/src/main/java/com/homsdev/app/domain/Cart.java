@@ -28,24 +28,25 @@ public class Cart {
 	public BigDecimal getGrandTotal() {
 		return grandTotal;
 	}
-	
+
 	public void setGrandTotal(BigDecimal grandTotal) {
 		this.grandTotal = grandTotal;
 	}
 
 	public CartItem getProductById(String productID) {
-		return cartItems.stream()
-		.filter(product->product.getProduct().getProductID().equals(productID))
-		.findAny()
-		.orElse(null);
+		return cartItems.stream().filter(product -> product.getProduct().getProductID().equals(productID)).findAny()
+				.orElse(null);
 	}
-	
+
 	public void updateGrandTotal() {
-		this.grandTotal=cartItems.stream().map(x->x.getTotalprice()).reduce(BigDecimal.ZERO,BigDecimal::add);
+		this.grandTotal = cartItems.stream().map(x -> x.getTotalprice()).reduce(BigDecimal.ZERO, BigDecimal::add);
 		this.setGrandTotal(grandTotal);
 	}
-	
-	
-	
 
+	@Override
+	public String toString() {
+		return "Cart [ID=" + ID + ", cartItems=" + cartItems + ", grandTotal=" + grandTotal + "]";
+	}
+	
+	
 }
