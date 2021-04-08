@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.homsdev.app.domain.Cart;
 import com.homsdev.app.dto.CartDTO;
-
+import com.homsdev.app.exception.RecordNotFoundException;
 import com.homsdev.app.service.CartService;
 
 @RestController
@@ -32,20 +32,33 @@ public class CartRESTController {
 
 	@RequestMapping("/{cartID}")
 	public Cart getCart(@PathVariable("cartID") String cartID) {
-		return cartService.getCart(cartID);
+		try {
+			return cartService.getCart(cartID);
+		}catch(Exception e) {
+			throw new RecordNotFoundException("Cannot find cart with ID: "+cartID);
+		}
 	}
 
 	@PutMapping("/{cartID}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void updateCart(@PathVariable("cartID") String cartID, @RequestBody CartDTO cartUpdated) {
-		cartUpdated.setID(cartID);
-		cartService.update(cartID, cartUpdated);
+		try {
+			cartUpdated.setID(cartID);
+			cartService.update(cartID, cartUpdated);			
+		}catch(Exception e){
+			throw new RecordNotFoundException("Cannot find cart with ID: "+cartID);
+		}
 	}
 
 	@DeleteMapping("/{cartID}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void deleteCart(@PathVariable("cartID") String cartID) {
-		cartService.delete(cartID);
+		try {
+			cartService.delete(cartID);					
+		}catch(Exception e){
+			throw new RecordNotFoundException("Cannot delete cart with ID: "+cartID);
+		}
+		
 	}
 
 }
