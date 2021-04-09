@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -100,31 +100,34 @@ public class InMemoryCartRepository implements CartRepository {
 
 	@Override
 	public void addItem(String ID, CartItemDTO item) {
+		System.out.println("HERE"+item.toString());
+		System.out.println(ID);
 		String SQL_SEARCH_ITEM = "SELECT * FROM CART_ITEM WHERE CART_ID = :cartID AND PRODUCT_ID= :productID";
+		String SQL_UPDATE_QUANTITY = "UPDATE CART_ITEM SET QUANTITY = :quantity WHERE ID= :id";
+		String SQL_INSERT_ITEM = "INSERT INTO CART_ITEM (ID,PRODUCT_ID,CART_ID,QUANTITY)" + "VALUES (" 
+				+ ":id ,"
+				+ ":productID ,"
+				+ ":cartID ,"
+				+ ":quantity" 
+				+ ")";
 		Map<String, Object> searchParams = new HashMap<>();
-		searchParams.put("cartId", ID);
+		searchParams.put("cartID", ID);
 		searchParams.put("productID", item.getProductID());
-
-		CartItem itemExists = jdbcTemplate.queryForObject(SQL_SEARCH_ITEM, searchParams,
-				new ItemsMapper(productService));
-		if (itemExists != null) {
-			String SQL_UPDATE_QUANTITY = "UPDATE CART_ITEM SET QUANTITY = :quantity WHERE CART_ID = :cartID AND PRODUCT_ID = :productID";
-			itemExists.setQuantity(itemExists.getQuantity() + 1);
-			Map<String, Object> updateParams = new HashMap<String, Object>();
-			updateParams.put("quantity", itemExists.getQuantity());
-			updateParams.put("cartID", ID);
-			updateParams.put("productID", itemExists.getProduct().getProductID());
+		Map<String, Object> updateParams = new HashMap<String, Object>();
+		updateParams.put("quantity", item.getQuantity());
+		updateParams.put("id", item.getID());
+		try {
+			CartItem itemInCart = jdbcTemplate.queryForObject(SQL_SEARCH_ITEM, searchParams,new ItemsMapper(productService));			
 			jdbcTemplate.update(SQL_UPDATE_QUANTITY, updateParams);
-		} else {
-			String SQL_INSERT_ITEM = "INSERT INTO CART_ITEM (ID,PRODUCT_ID,CART_ID,QUANTITY)" + "VALUES (" + ":id ,"
-					+ ":productID ," + ":cartID ," + ":quantity ," + ")";
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("id", item.getID());
-			params.put("productID", item.getProductID());
-			params.put("cartID", item.getCartID());
-			params.put("quantity", item.getQuantity());
-			jdbcTemplate.update(SQL_INSERT_ITEM, params);
+		}catch(EmptyResultDataAccessException ex) {
+			updateParams.clear();
+			updateParams.put("id", item.getID());
+			updateParams.put("productID", item.getProductID());
+			updateParams.put("cartID", ID);
+			updateParams.put("quantity", item.getQuantity());
+			jdbcTemplate.update(SQL_INSERT_ITEM, updateParams);			
 		}
+		
 	}
 
 	@Override

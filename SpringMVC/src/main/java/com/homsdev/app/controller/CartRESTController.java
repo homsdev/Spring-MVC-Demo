@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.homsdev.app.domain.Cart;
 import com.homsdev.app.dto.CartDTO;
+import com.homsdev.app.dto.CartItemDTO;
 import com.homsdev.app.exception.RecordNotFoundException;
 import com.homsdev.app.service.CartService;
 
@@ -24,7 +26,7 @@ public class CartRESTController {
 	@Autowired
 	private CartService cartService;
 
-	@RequestMapping("/")
+	@PostMapping("/")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public void createNewCart(@RequestBody CartDTO newCart) {
 		cartService.create(newCart);
@@ -35,7 +37,7 @@ public class CartRESTController {
 		try {
 			return cartService.getCart(cartID);
 		}catch(Exception e) {
-			throw new RecordNotFoundException("Cannot find cart with ID: "+cartID);
+			throw new RecordNotFoundException("Cart no longer exists");
 		}
 	}
 
@@ -46,7 +48,7 @@ public class CartRESTController {
 			cartUpdated.setID(cartID);
 			cartService.update(cartID, cartUpdated);			
 		}catch(Exception e){
-			throw new RecordNotFoundException("Cannot find cart with ID: "+cartID);
+			throw new RecordNotFoundException("Cart no longer exists");
 		}
 	}
 
@@ -56,9 +58,20 @@ public class CartRESTController {
 		try {
 			cartService.delete(cartID);					
 		}catch(Exception e){
-			throw new RecordNotFoundException("Cannot delete cart with ID: "+cartID);
+			throw new RecordNotFoundException("Cart no longer exists");
 		}
 		
 	}
+	
+	@PostMapping("/{cartID}")
+	public void addItemsToCart(@PathVariable("cartID")String cartID, @RequestBody CartItemDTO item) {
+		try {			
+			cartService.addItem(cartID, item);			
+		} catch (Exception e) {
+			throw new RecordNotFoundException("Cart no longer exists");
+		}
+		
+	}
+	
 
 }
