@@ -3,7 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@page isELIgnored="false"%>
-<c:url value="/css/main.css" var="styles"></c:url>
+<c:url value="/css/style.css" var="styles"></c:url>
+<c:url value="/img/cookies.png" var="productIMG"></c:url>
+<c:url value="/js/app.js" var="JScript"></c:url>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,36 +16,72 @@
 <link rel="stylesheet" href="${styles}" />
 </head>
 <body>
-	<nav>
-		<ul>
-			<li><a href="">Home</a></li>
-			<li><a href="">Products</a></li>
-			<li><a href="">Login</a></li>
-			<li><a href="">About</a></li>
-		</ul>
-	</nav>
+	<header>
+		<nav>
+			<a href="/" class="logo">Cookies n'Cream</a>
+			<div class="toggle">
+				<div class="bar"></div>
+				<ul>
+					<li><a href=""></a>Login</li>
+					<li><a href=""></a>Products</li>
+					<li><a href=""></a>Cart</li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+	
+	
+	<div class="modal hidden">
+      <div class="content">
+        <div class="modal__header">
+          <h2>Quantity</h2>
+          <span id="btnCloseModal">&times</span>
+        </div>
+        <div class="modal__body">
+          <form action="POST" id="modalForm">
+            <input id="quantity" type="number" min="1" value="1" />
+            <button type="submit">Buy</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <div class="cart cart-hide" >
+      <div class="cart__toggle">
+        <button id="btnCloseCart"></button>
+      </div>
+      <div class="cart__items" id="shopping-list">
+      
+      </div>
+    </div>
+
 	<main class="products-view">
-		<div class="grid-products">
+		<div class="grid-container">
 
 			<c:forEach var="product" items="${products}">
-				<div class="product">
-					<div class="product-img">
-						<img alt="product image"
-							src="<c:url value="/img/${product.productID}.jpg"></c:url>" />
+
+				<div class="item">
+					<div class="item__title">
+						<h2>What's new</h2>
 					</div>
-					<div class="title">
-						<h3>${product.name}</h3>
+					<div class="item__body">
+						<div class="preview">
+							<h3>${product.manufacturer}
+								<br />
+								<span>${product.name}</span>
+							</h3>
+							<p>$ ${product.unitPrice}</p>
+							<img src="${productIMG}" alt="Product Image" />
+						</div>
+
+						<div class="details">
+							<p>${product.description}</p>
+						</div>
 					</div>
-					<div class="description">
-						<p>${product.description}
-							<span>by: ${product.manufacturer }</span>
-						</p>
-						<p>$ ${product.unitPrice }</p>
-					</div>
-					<div class="order">
-						<a
-							href="<spring:url value="/market/product?id=${product.productID}"></spring:url>">Order
-							Now</a>
+
+					<div class="item__footer">
+						<button class="btn-cart" data-id="${product.productID}">Add
+							to Cart</button>
 					</div>
 				</div>
 
@@ -52,5 +90,7 @@
 
 		</div>
 	</main>
+	
+	<script type="text/javascript" src="${JScript}"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ import com.homsdev.app.dto.CartDTO;
 import com.homsdev.app.dto.CartItemDTO;
 
 public interface CartService {
-	void create(CartDTO cartDTO);
+	String create(CartDTO cartDTO);
 
 	Cart getCart(String ID);
 

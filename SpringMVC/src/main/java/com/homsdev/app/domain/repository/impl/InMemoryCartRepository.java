@@ -100,16 +100,12 @@ public class InMemoryCartRepository implements CartRepository {
 
 	@Override
 	public void addItem(String ID, CartItemDTO item) {
-		System.out.println("HERE"+item.toString());
+		System.out.println("HERE" + item.toString());
 		System.out.println(ID);
 		String SQL_SEARCH_ITEM = "SELECT * FROM CART_ITEM WHERE CART_ID = :cartID AND PRODUCT_ID= :productID";
 		String SQL_UPDATE_QUANTITY = "UPDATE CART_ITEM SET QUANTITY = :quantity WHERE ID= :id";
-		String SQL_INSERT_ITEM = "INSERT INTO CART_ITEM (ID,PRODUCT_ID,CART_ID,QUANTITY)" + "VALUES (" 
-				+ ":id ,"
-				+ ":productID ,"
-				+ ":cartID ,"
-				+ ":quantity" 
-				+ ")";
+		String SQL_INSERT_ITEM = "INSERT INTO CART_ITEM (ID,PRODUCT_ID,CART_ID,QUANTITY)" + "VALUES (" + ":id ,"
+				+ ":productID ," + ":cartID ," + ":quantity" + ")";
 		Map<String, Object> searchParams = new HashMap<>();
 		searchParams.put("cartID", ID);
 		searchParams.put("productID", item.getProductID());
@@ -117,17 +113,18 @@ public class InMemoryCartRepository implements CartRepository {
 		updateParams.put("quantity", item.getQuantity());
 		updateParams.put("id", item.getID());
 		try {
-			CartItem itemInCart = jdbcTemplate.queryForObject(SQL_SEARCH_ITEM, searchParams,new ItemsMapper(productService));			
+			CartItem itemInCart = jdbcTemplate.queryForObject(SQL_SEARCH_ITEM, searchParams,
+					new ItemsMapper(productService));
 			jdbcTemplate.update(SQL_UPDATE_QUANTITY, updateParams);
-		}catch(EmptyResultDataAccessException ex) {
+		} catch (EmptyResultDataAccessException ex) {
 			updateParams.clear();
 			updateParams.put("id", item.getID());
 			updateParams.put("productID", item.getProductID());
 			updateParams.put("cartID", ID);
 			updateParams.put("quantity", item.getQuantity());
-			jdbcTemplate.update(SQL_INSERT_ITEM, updateParams);			
+			jdbcTemplate.update(SQL_INSERT_ITEM, updateParams);
 		}
-		
+
 	}
 
 	@Override

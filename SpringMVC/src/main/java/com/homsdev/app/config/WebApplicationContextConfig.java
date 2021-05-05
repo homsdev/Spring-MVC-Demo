@@ -39,11 +39,12 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
 		configurer.enable();
 	}
 
-	// Configures static resources for Spring¿MVC
+	// Configures static resources for Springï¿½MVC
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/img/**").addResourceLocations("/resources/images/");
 		registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
+		registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
 	}
 
 	@Override
@@ -61,7 +62,7 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
 		super.addInterceptors(registry);
 	}
 
-	// This bean resolves the actual view´s file path
+	// This bean resolves the actual viewï¿½s file path
 //      Its job is to form the actual URL from the returned String from the controller
 	@Bean
 	public InternalResourceViewResolver getInternalResourceViewResolver() {

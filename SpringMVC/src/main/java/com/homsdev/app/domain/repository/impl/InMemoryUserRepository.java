@@ -30,7 +30,8 @@ public class InMemoryUserRepository implements UserRepository {
 		userInfo.put("password", newUser.getPassword());
 		userInfo.put("role", newUser.getRole());
 		userInfo.put("enable", newUser.isEnable());
-
+		
+		System.out.println(newUser.toString());
 		jdbcTemplate.update(SQL, userInfo);
 	}
 
