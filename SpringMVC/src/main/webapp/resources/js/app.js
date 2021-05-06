@@ -27,11 +27,16 @@ btnsAddtoCart.forEach(btn => btn.addEventListener('click', (e) => {
 	modalBox.classList.toggle('hidden');
 }));
 
-//Add product and quantity to Cart
+//Form to Add product info to localStorage
 modalForm.addEventListener('submit', (e) => {
 	e.preventDefault();
 	if (actualProduct) {
-		addItemToCart(actualProduct, parseInt(tBQuantity.value));
+		let item = {
+			'productID': actualProduct,
+			'quantity': parseInt(tBQuantity.value)
+		}
+		updateStorage(item);//Add product to LocalStorage
+		updateCart(item.productID);
 	}
 });
 
@@ -39,6 +44,7 @@ modalForm.addEventListener('submit', (e) => {
 //close Modal form
 btnCloseModal.addEventListener('click', () => {
 	actualProduct = null;
+	tBQuantity.value = 1;
 	modalBox.classList.toggle('hidden');
 });
 
@@ -78,7 +84,7 @@ function showCartItems() {
 			}
 			shoppingList.appendChild(fragment);
 		})
-		.catch(error=>console.log(error));
+		.catch(error => console.log(error));
 }
 
 
@@ -99,26 +105,41 @@ btnCloseCart.addEventListener("click", () => {
 
 /*
 ==============================================
+			Local Storage API
+=============================================*/
+
+const updateStorage= (item) => {
+	let itemInStorage = localStorage.getItem(item.productID);
+
+	if (itemInStorage) {
+		localStorage[item.productID] = +localStorage[item.productID] + item.quantity;
+	} else {
+		localStorage.setItem(item.productID, item.quantity);
+	}
+}
+
+const updateCart = (productID)=> {
+	let item = {
+		'productID': productID,
+		'quantity': parseInt(localStorage[productID])
+	}
+	
+	let cart = {
+		cartItems: []
+	}
+	
+	cart.cartItems.push(item);
+	localStorage.getItem('cartID') ? addItemToCart(item,localStorage['cartID']) : createCart(cart);
+}
+
+
+/*
+==============================================
 			API Consuming Service
 =============================================*/
 
 const url = window.location.protocol + "//" + window.location.host + "/SpringMVC/api/cart/";
 
-let cart = {
-	cartItems: []
-}
-
-//Add or update items in the cart and send the info to backend
-function addItemToCart(productID, quantity) {
-	let item = {
-		"productID": productID,
-		"quantity": quantity
-	}
-	let foundItem = cart.cartItems.find(item => item.productID == productID);
-	foundItem ? foundItem.quantity += quantity : cart.cartItems.push(item);
-	let cartID = localStorage.getItem("cartID");
-	cartID ? updateCart(cartID) : createCart(cart); 
-}
 
 //creates a new cart
 function createCart(cart) {
@@ -138,15 +159,15 @@ function createCart(cart) {
 	}).catch(error => console.error('Error:', error));
 }
 
-function updateCart(cartID) { 
-	console.log(cart);
-	fetch(`${url}/${cartID}`,{
-		method: 'PUT',
-		body: JSON.stringify(cart),
+function addItemToCart(item, cartID) {
+
+	fetch(`${url}${cartID}`, {
+		method: 'POST',
+		body: JSON.stringify(item),
 		headers: {
 			'Content-type': 'application/json'
 		}
-	}).then(res =>{
+	}).then(res => {
 		console.log(res);
 	})
 	console.log(`update cart and Stuff`);
@@ -155,7 +176,7 @@ function updateCart(cartID) {
 async function getCart() {
 	let cartID = localStorage.getItem('cartID');
 	if (cartID != null) {
-		let cart = await fetch(`${url}/${cartID}`)
+		let cart = await fetch(`${url}${cartID}`)
 			.then(res => res.json())
 			.then(json => {
 				return json;
