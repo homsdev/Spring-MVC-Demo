@@ -138,7 +138,7 @@ const updateCart = (productID)=> {
 			API Consuming Service
 =============================================*/
 
-const url = window.location.protocol + "//" + window.location.host + "/SpringMVC/api/cart/";
+const url = window.location.protocol + "//" + window.location.host + "/api/cart/";
 
 
 //creates a new cart
