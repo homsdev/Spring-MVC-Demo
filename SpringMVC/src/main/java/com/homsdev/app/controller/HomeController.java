@@ -10,10 +10,10 @@ public class HomeController {
 	
 	@RequestMapping("/")
 	public String welcome(Model model,RedirectAttributes redirectAttributes) {
-		model.addAttribute("greeting", "Welcome to eStore");
-		model.addAttribute("tagline","Created with JAVA Spring MVC");
-		redirectAttributes.addFlashAttribute("greeting", "Welcome to eStore");
-		redirectAttributes.addFlashAttribute("tagline", "Created with JAVA Spring MVC");
+		model.addAttribute("greeting", "Welcome to Sprinkled");
+		model.addAttribute("tagline","Java Spring MVC Web application developed by HomS");
+		redirectAttributes.addFlashAttribute("greeting", "Welcome to Sprinkled");
+		redirectAttributes.addFlashAttribute("tagline", "JAVA MVC Spring application developed by HomS");
 		return "redirect:/welcome/greeting";
 	}
 	

@@ -1,6 +1,10 @@
-INSERT INTO PRODUCTS VALUES ('P1234', 'iPhone 6s', 'Apple iPhone 6s smartphone with 4.00-inch 640x1136 display and 8-megapixel rear camera','500','Apple','Smartphone','New',450,0,false);
-INSERT INTO PRODUCTS VALUES ('P1235', 'Dell Inspiron','Dell Inspiron 14-inch Laptop (Black) with 3rd Generation IntelCore processors',700,'Dell','Laptop','New',1000,0,false);
-INSERT INTO PRODUCTS VALUES ('P1236', 'Nexus 7', 'Google Nexus 7 is the lightest 7 inch tablet With a quad-core Qualcomm Snapdragon� S4 Pro processor', 300,'Google','Tablet','New',1000,0,false);
+INSERT INTO PRODUCTS VALUES ('P1234', 'Almond Cookie', 'very rich cookie containing ground almonds; usually crescent-shaped','5','enchanted','Cookies','New',450,0,false);
+INSERT INTO PRODUCTS VALUES ('P1235', 'Cheesecake','mouth watering fragrance that starts wit base notes of sweet cream butter and graham crackers. These lead to middle notes of creamy vanilla, cream cheese, and sweet condensed milk, with just a hint of almond as a top note!',10,'Nature s Garden','Cake','New',1000,0,false);
+INSERT INTO PRODUCTS VALUES ('P1236', 'Jellyroll', 'Soft, sweet, and full of jam, this sponge cake is easy to roll and makes for a simple yet impressive dessert!', 7,'enchanted','Cake','New',1000,0,false);
+INSERT INTO PRODUCTS VALUES ('P1237', 'Apple Pie','mouth watering fragrance that starts wit base notes of sweet cream butter and graham crackers. These lead to middle notes of creamy vanilla, cream cheese, and sweet condensed milk, with just a hint of almond as a top note!',15,'Nature s Garden','Donut','New',1000,0,false);
+INSERT INTO PRODUCTS VALUES ('P1238', 'Chocolate Cake','mouth watering fragrance that starts wit base notes of sweet cream butter and graham crackers. These lead to middle notes of creamy vanilla, cream cheese, and sweet condensed milk, with just a hint of almond as a top note!',9,'Nature s Garden','Cupcake','New',1000,0,false);
+INSERT INTO PRODUCTS VALUES ('P1239', 'Flan','mouth watering fragrance that starts wit base notes of sweet cream butter and graham crackers. These lead to middle notes of creamy vanilla, cream cheese, and sweet condensed milk, with just a hint of almond as a top note!',25,'Nature s Garden','Cookies','New',1000,0,false);
+INSERT INTO PRODUCTS VALUES ('P12310', 'Cheesecake','mouth watering fragrance that starts wit base notes of sweet cream butter and graham crackers. These lead to middle notes of creamy vanilla, cream cheese, and sweet condensed milk, with just a hint of almond as a top note!',18,'Nature s Garden','Cake','New',1000,0,false);
 INSERT INTO CUSTOMERS VALUES ('C1234','HomS','USA',3);
 INSERT INTO CUSTOMERS VALUES ('C1235','Sarah','UK',0);
 INSERT INTO CUSTOMERS VALUES ('C1236','Falz','JPN',10);

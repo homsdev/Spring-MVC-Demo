@@ -4,7 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@page isELIgnored="false"%>
 <c:url value="/css/style.css" var="styles"></c:url>
-<c:url value="/img/cookies.png" var="productIMG"></c:url>
+<c:url value="/img" var="imgURL"></c:url>
 <c:url value="/js/app.js" var="JScript"></c:url>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,38 +22,49 @@
 			<div class="toggle">
 				<div class="bar"></div>
 				<ul>
-					<li><a href=""></a>Login</li>
-					<li><a href=""></a>Products</li>
-					<li><a href=""></a>Cart</li>
+					<li>
+						<a href="<c:url value="/logout"></c:url>"> 
+						<img src="${imgURL}/icons/login.png" alt="" /> Logout</a>
+					</li>
+					<li>
+						<a href="<c:url value="/market/products"></c:url>">
+						<img src="${imgURL}/icons/shop.png" alt="" />Market</a>
+					</li>
+					<li>
+						<a href="<c:url value="/customer/list"></c:url>">
+						<img src="${imgURL}/icons/customer.png" alt="" /> Customer</a>
+					</li>
+					<li>
+						<a href=""> 
+						<img src="${imgURL}/icons/about.png" alt="" /> About</a>
+					</li>
 				</ul>
 			</div>
 		</nav>
 	</header>
-	
-	
+
+
 	<div class="modal hidden">
-      <div class="content">
-        <div class="modal__header">
-          <h2>Quantity</h2>
-          <span id="btnCloseModal">&times</span>
-        </div>
-        <div class="modal__body">
-          <form action="POST" id="modalForm">
-            <input id="quantity" type="number" min="1" value="1" />
-            <button type="submit">Buy</button>
-          </form>
-        </div>
-      </div>
-    </div>
-    
-    <div class="cart cart-hide" >
-      <div class="cart__toggle">
-        <button id="btnCloseCart"></button>
-      </div>
-      <div class="cart__items" id="shopping-list">
-      
-      </div>
-    </div>
+		<div class="content">
+			<div class="modal__header">
+				<h2>Quantity</h2>
+				<span id="btnCloseModal">&times</span>
+			</div>
+			<div class="modal__body">
+				<form action="POST" id="modalForm">
+					<input id="quantity" type="number" min="1" value="1" />
+					<button type="submit">Buy</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="cart cart-hide">
+		<div class="cart__toggle">
+			<button id="btnCloseCart"></button>
+		</div>
+		<div class="cart__items" id="shopping-list"></div>
+	</div>
 
 	<main class="products-view">
 		<div class="grid-container">
@@ -66,12 +77,11 @@
 					</div>
 					<div class="item__body">
 						<div class="preview">
-							<h3>${product.manufacturer}
-								<br />
-								<span>${product.name}</span>
+							<h3>${product.category}
+								<br /> <span>${product.name}</span>
 							</h3>
 							<p>$ ${product.unitPrice}</p>
-							<img src="${productIMG}" alt="Product Image" />
+							<img src="${imgURL}/${product.category}.png" alt="Product Image" />
 						</div>
 
 						<div class="details">
@@ -90,7 +100,7 @@
 
 		</div>
 	</main>
-	
+
 	<script type="text/javascript" src="${JScript}"></script>
 </body>
 </html>

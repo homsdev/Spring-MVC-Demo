@@ -6,7 +6,6 @@
 <c:url value="/css/main.css" var="styles"></c:url>
 <c:url value="/market/products" var="productsURL"></c:url>
 <c:url value="/login" var="loginURL"></c:url>
-<c:url value="/" var="aboutURL"></c:url>
 <c:url value="/" var="welcomeURL"></c:url>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,20 +17,31 @@
 <link rel="stylesheet" href="${styles}" />
 </head>
 <body>
-	<nav class="nav-fixed-top">
-      <ul class="nav-items">
-        <li class="nav-items__item"><a href="${welcomeURL}">Home</a></li>
-        <li class="nav-items__item"><a href="${productsURL}">Products</a></li>
-        <li class="nav-items__item"><a href="${loginURL}">Login</a></li>
-        <li class="nav-items__item"><a href="${aboutURL}">About</a></li>
-      </ul>
-    </nav>
 
-	<main class="fullscreen-main">
-      <div class="jumbotron-dark">
-        <h1>${greeting }</h1>
-        <p>${tagline}</p>
-      </div>
-    </main>
+	<header>
+		<nav class="nav">
+			<div class="logo">
+				<h1>Sprinkled</h1>
+			</div>
+			<div class="sign">
+				<a href="${loginURL}">Login <img
+					src="/assets/img/icons/logon.png" alt="" /></a>
+			</div>
+		</nav>
+	</header>
+
+	<div class="pop">
+		<p>User: Demo</p>
+		<p>Pass: demo$pring123.</p>
+	</div>
+
+	<div class="landing">
+		<div class="content">
+			<h1>${greeting}</h1>
+			<h2>${tagline}</h2>
+			<a href="https://www.homsdev.com">Click to know <span>More</span></a>
+		</div>
+	</div>
+
 </body>
 </html>
