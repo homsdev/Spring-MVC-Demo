@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@page isELIgnored="false"%>
-<c:url value="/css/style.css" var="styles"></c:url>
+<c:url value="/css" var="CSS"></c:url>
 <c:url value="/img" var="imgURL"></c:url>
 <c:url value="/js/app.js" var="JScript"></c:url>
 <!DOCTYPE html>
@@ -13,7 +13,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Products</title>
-<link rel="stylesheet" href="${styles}" />
+<link rel="stylesheet" href="${CSS}/main.css" />
 </head>
 <body>
 	<header>

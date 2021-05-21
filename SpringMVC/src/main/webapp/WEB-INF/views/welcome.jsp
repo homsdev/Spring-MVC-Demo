@@ -3,7 +3,8 @@
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page isELIgnored="false"%>
-<c:url value="/css/main.css" var="styles"></c:url>
+<c:url value="/css" var="styles"></c:url>
+<c:url value="/img" var="imgURL" ></c:url>
 <c:url value="/market/products" var="productsURL"></c:url>
 <c:url value="/login" var="loginURL"></c:url>
 <c:url value="/" var="welcomeURL"></c:url>
@@ -14,7 +15,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Online Store</title>
-<link rel="stylesheet" href="${styles}" />
+<link rel="stylesheet" href="${styles}/normalize.css">
+<link rel="stylesheet" href="${styles}/main.css" />
 </head>
 <body>
 
@@ -24,8 +26,7 @@
 				<h1>Sprinkled</h1>
 			</div>
 			<div class="sign">
-				<a href="${loginURL}">Login <img
-					src="/assets/img/icons/logon.png" alt="" /></a>
+				<a href="${loginURL}">Login</a>
 			</div>
 		</nav>
 	</header>
